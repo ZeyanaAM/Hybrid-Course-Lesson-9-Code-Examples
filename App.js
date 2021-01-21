@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
-import { createStore } from 'redux';
+import { createStore, combineReducers } from 'redux';
 import { Provider, useSelector, useDispatch } from 'react-redux';
 
 function counterReducer(state = { count: 0, numberOfViews: 10 }, action) {
@@ -101,7 +101,8 @@ const ChildComponent = () => {
 };
 
 const ReactReduxApp = () => {
-  const count = useSelector((state) => state.count);
+  // const count = useSelector((state) => state.count);
+  const count = useSelector((state) => state.counter.count);
   const dispatch = useDispatch();
 
   return (
@@ -121,9 +122,18 @@ const ReactReduxApp = () => {
   );
 };
 
+/* Multiple reducers example */
+
+const rootReducer = combineReducers({
+  counter: counterReducer,
+  user: userReducer,
+});
+const multipleReducersStore = createStore(rootReducer);
+
 const ReactReduxExample = () => {
   return (
-    <Provider store={store}>
+    // <Provider store={store}>
+    <Provider store={multipleReducersStore}>
       <ReactReduxApp />
     </Provider>
   );
